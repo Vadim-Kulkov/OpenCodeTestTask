@@ -10,7 +10,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "form_passage")
 public class FormPassage {
@@ -37,8 +36,8 @@ public class FormPassage {
     @ManyToMany
     @JoinTable(
             name = "form_passage_answer",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+            joinColumns = {@JoinColumn(name = "form_passage")},
+            inverseJoinColumns = {@JoinColumn(name = "answer")})
     private Set<Answer> answers;
 
     @Override

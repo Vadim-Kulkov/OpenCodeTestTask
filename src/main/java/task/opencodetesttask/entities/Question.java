@@ -10,7 +10,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "question")
 public class Question {
@@ -30,7 +29,7 @@ public class Question {
     @Column(name = "content")
     private String content;
 
-    @OneToMany
+    @OneToMany(mappedBy = "question")
     private Set<Answer> possibleAnswers;
 
     @Override

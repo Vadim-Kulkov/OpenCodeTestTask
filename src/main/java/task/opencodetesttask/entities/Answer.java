@@ -3,7 +3,6 @@ package task.opencodetesttask.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,7 +10,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "answer")
 public class Answer {
@@ -28,8 +26,8 @@ public class Answer {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "right")
-    private boolean right;
+    @Column(name = "correct")
+    private boolean correct;
 
     @ManyToMany(mappedBy = "answers")
     private Set<FormPassage> passages;
