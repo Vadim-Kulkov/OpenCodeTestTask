@@ -31,7 +31,7 @@ public class Person {
     private long points;
 
     @OneToMany(mappedBy = "person")
-    private Set<FormPassage> passagedForms;
+    private Set<FormPassage> passedForms;
 
     @Override
     public boolean equals(Object o) {
