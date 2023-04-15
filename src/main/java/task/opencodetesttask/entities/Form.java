@@ -27,7 +27,11 @@ public class Form {
     private String description;
 
     @OneToMany(mappedBy = "form")
-    private Set<FormPassage> passagedForms;
+    private Set<FormPassage> passedForms;
+
+    @OneToMany
+    @JoinColumn(name = "questions")
+    private Set<Question> questions;
 
     @Override
     public boolean equals(Object o) {

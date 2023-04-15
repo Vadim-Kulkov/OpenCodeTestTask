@@ -3,6 +3,8 @@ package task.opencodetesttask.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import task.opencodetesttask.dto.UserWithRatingDto;
+import task.opencodetesttask.dto.converter.UserWithRatingConverter;
 import task.opencodetesttask.entities.Person;
 import task.opencodetesttask.repository.PersonRepository;
 
@@ -14,10 +16,12 @@ import java.util.Objects;
 public class PersonController {
 
     private final PersonRepository repository;
+    private final UserWithRatingConverter userWithRatingConverter;
 
     @Autowired
-    public PersonController(PersonRepository personRepository) {
-        this.repository = personRepository;
+    public PersonController(PersonRepository repository, UserWithRatingConverter userWithRatingConverter) {
+        this.repository = repository;
+        this.userWithRatingConverter = userWithRatingConverter;
     }
 
     @GetMapping
@@ -49,5 +53,11 @@ public class PersonController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") long id) {
         repository.deleteById(id);
+    }
+
+    @GetMapping(value = "/getRatings")
+    public List<UserWithRatingDto> getRatings() {
+        List<Person> persons = repository.findByOrderByPointsDesc();
+        return userWithRatingConverter.convert(persons);
     }
 }
