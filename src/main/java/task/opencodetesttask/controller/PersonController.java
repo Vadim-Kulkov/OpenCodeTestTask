@@ -4,60 +4,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import task.opencodetesttask.dto.UserWithRatingDto;
-import task.opencodetesttask.dto.converter.UserWithRatingConverter;
 import task.opencodetesttask.entities.Person;
-import task.opencodetesttask.repository.PersonRepository;
+import task.opencodetesttask.service.PersonService;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/persons")
 public class PersonController {
 
-    private final PersonRepository repository;
-    private final UserWithRatingConverter userWithRatingConverter;
+    private final PersonService personService;
 
     @Autowired
-    public PersonController(PersonRepository repository, UserWithRatingConverter userWithRatingConverter) {
-        this.repository = repository;
-        this.userWithRatingConverter = userWithRatingConverter;
+    public PersonController(PersonService personService) {
+        this.personService = personService;
     }
 
     @GetMapping
     public List<Person> getAll() {
-        return repository.findAll();
+        return personService.findAll();
     }
 
     @GetMapping(value = "/{id}")
-    public Person findById(@PathVariable("id") Long id) {
-        return repository.findById(id).orElse(null);
+    public Person findById(@PathVariable("id") long id) {
+        return personService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public long create(@RequestBody Person resource) {
-        Objects.requireNonNull(resource);
-        return repository.save(resource).getId();
+        return personService.save(resource);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable("id") long id, @RequestBody Person resource) {
-        Objects.requireNonNull(resource);
         resource.setId(id);
-        repository.save(resource);
+        personService.save(resource);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") long id) {
-        repository.deleteById(id);
+        personService.deleteById(id);
     }
 
     @GetMapping(value = "/getRatings")
     public List<UserWithRatingDto> getRatings() {
-        List<Person> persons = repository.findByOrderByPointsDesc();
-        return userWithRatingConverter.convert(persons);
+        return personService.getRatings();
     }
 }
